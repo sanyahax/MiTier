@@ -65,18 +65,15 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
         guard let services = peripheral.services else { return }
         for service in services {
           print(service)
-          print(service.characteristics ?? "characteristics are nil")
           peripheral.discoverCharacteristics(nil, for: service)
         }
     }
     
-    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService,
-                    error: Error?) {
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
       guard let characteristics = service.characteristics else { return }
       for characteristic in characteristics {
         print(characteristic)
         vehicleCharacteristic = characteristic
-        
       }
     }
 }
@@ -89,6 +86,7 @@ class ViewController: UIViewController {
     var vehiclePeripheral: CBPeripheral!
     var vehicleCharacteristic:CBCharacteristic!
     var menu: SideMenuNavigationController?
+    var cbPassword = "password"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,14 +117,14 @@ class ViewController: UIViewController {
             sender.setImage(on_image, for: .normal)
             enabled = true
             print("Vehicle unlocked.")
-            vehiclePeripheral.writeValue("AT+BKSCT=btpass,0$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            vehiclePeripheral.writeValue("AT+BKSCT=\(cbPassword),0$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
             
         }
         else if enabled {
             sender.setImage(off_image, for: .normal)
             enabled = false
             print("Vehicle locked")
-            vehiclePeripheral.writeValue("AT+BKSCT=btpass,1$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            vehiclePeripheral.writeValue("AT+BKSCT=\(cbPassword),1$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
         }
         
     }
