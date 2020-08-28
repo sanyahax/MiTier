@@ -133,6 +133,7 @@ class ViewController: UIViewController {
         sender.setThumbImage(sliderThumb, for: UIControl.State.normal)
         let speedInt:Int = Int(sender.value)
            print("Speed \(speedInt)")
+        vehiclePeripheral.writeValue("AT+BKECP=\(cbPassword),1,\(speedInt),1,$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
     }
 }
 class MenuListController: UITableViewController {
