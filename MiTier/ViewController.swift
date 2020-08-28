@@ -119,13 +119,14 @@ class ViewController: UIViewController {
             sender.setImage(on_image, for: .normal)
             enabled = true
             print("Vehicle unlocked.")
-            vehiclePeripheral.writeValue("AT+BKSCT=PASS123,1$,r,n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            vehiclePeripheral.writeValue("AT+BKSCT=btpass,0$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
             
         }
         else if enabled {
             sender.setImage(off_image, for: .normal)
             enabled = false
             print("Vehicle locked")
+            vehiclePeripheral.writeValue("AT+BKSCT=btpass,1$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
         }
         
     }
