@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4AE9B497F323B8574F6435EB /* Pods_MiTierTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E09A59788D62FA36D8A81E03 /* Pods_MiTierTests.framework */; };
+		7204104A5C81411D5F5F782E /* Pods_MiTier.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 942E7343E7B0E98B51929A51 /* Pods_MiTier.framework */; };
 		98059B4824F7C6FA00F12CE1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98059B4724F7C6FA00F12CE1 /* AppDelegate.swift */; };
 		98059B4A24F7C6FA00F12CE1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98059B4924F7C6FA00F12CE1 /* SceneDelegate.swift */; };
 		98059B4C24F7C6FA00F12CE1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98059B4B24F7C6FA00F12CE1 /* ViewController.swift */; };
@@ -15,6 +17,7 @@
 		98059B5424F7C6FA00F12CE1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98059B5224F7C6FA00F12CE1 /* LaunchScreen.storyboard */; };
 		98059B5F24F7C6FA00F12CE1 /* MiTierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98059B5E24F7C6FA00F12CE1 /* MiTierTests.swift */; };
 		98059B6A24F7C6FA00F12CE1 /* MiTierUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98059B6924F7C6FA00F12CE1 /* MiTierUITests.swift */; };
+		C5DE6C25E7BA8FB2D3F326A9 /* Pods_MiTier_MiTierUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98659779C261DD4AAD239594 /* Pods_MiTier_MiTierUITests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +38,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1D6DDC377556A4F65DAE4DCB /* Pods-MiTier-MiTierUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MiTier-MiTierUITests.debug.xcconfig"; path = "Target Support Files/Pods-MiTier-MiTierUITests/Pods-MiTier-MiTierUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		43C2207EED117FB8F7A74DEB /* Pods-MiTierTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MiTierTests.release.xcconfig"; path = "Target Support Files/Pods-MiTierTests/Pods-MiTierTests.release.xcconfig"; sourceTree = "<group>"; };
+		4783D71A41F229C0731CC924 /* Pods-MiTierTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MiTierTests.debug.xcconfig"; path = "Target Support Files/Pods-MiTierTests/Pods-MiTierTests.debug.xcconfig"; sourceTree = "<group>"; };
+		500F77336FB21F6B89D2AA80 /* Pods-MiTier.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MiTier.debug.xcconfig"; path = "Target Support Files/Pods-MiTier/Pods-MiTier.debug.xcconfig"; sourceTree = "<group>"; };
+		942E7343E7B0E98B51929A51 /* Pods_MiTier.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MiTier.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		953D316D690B55373FEA25D2 /* Pods-MiTier.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MiTier.release.xcconfig"; path = "Target Support Files/Pods-MiTier/Pods-MiTier.release.xcconfig"; sourceTree = "<group>"; };
 		98059B4424F7C6FA00F12CE1 /* MiTier.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MiTier.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98059B4724F7C6FA00F12CE1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		98059B4924F7C6FA00F12CE1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -49,6 +58,9 @@
 		98059B6524F7C6FA00F12CE1 /* MiTierUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MiTierUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		98059B6924F7C6FA00F12CE1 /* MiTierUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiTierUITests.swift; sourceTree = "<group>"; };
 		98059B6B24F7C6FA00F12CE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		98659779C261DD4AAD239594 /* Pods_MiTier_MiTierUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MiTier_MiTierUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BEB5DB4FBFB6671B299714B4 /* Pods-MiTier-MiTierUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MiTier-MiTierUITests.release.xcconfig"; path = "Target Support Files/Pods-MiTier-MiTierUITests/Pods-MiTier-MiTierUITests.release.xcconfig"; sourceTree = "<group>"; };
+		E09A59788D62FA36D8A81E03 /* Pods_MiTierTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MiTierTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7204104A5C81411D5F5F782E /* Pods_MiTier.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4AE9B497F323B8574F6435EB /* Pods_MiTierTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,12 +84,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5DE6C25E7BA8FB2D3F326A9 /* Pods_MiTier_MiTierUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		10A239124E3C57E82EE095CC /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				500F77336FB21F6B89D2AA80 /* Pods-MiTier.debug.xcconfig */,
+				953D316D690B55373FEA25D2 /* Pods-MiTier.release.xcconfig */,
+				1D6DDC377556A4F65DAE4DCB /* Pods-MiTier-MiTierUITests.debug.xcconfig */,
+				BEB5DB4FBFB6671B299714B4 /* Pods-MiTier-MiTierUITests.release.xcconfig */,
+				4783D71A41F229C0731CC924 /* Pods-MiTierTests.debug.xcconfig */,
+				43C2207EED117FB8F7A74DEB /* Pods-MiTierTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		98059B3B24F7C6FA00F12CE1 = {
 			isa = PBXGroup;
 			children = (
@@ -83,6 +112,8 @@
 				98059B5D24F7C6FA00F12CE1 /* MiTierTests */,
 				98059B6824F7C6FA00F12CE1 /* MiTierUITests */,
 				98059B4524F7C6FA00F12CE1 /* Products */,
+				10A239124E3C57E82EE095CC /* Pods */,
+				D76EB399411811B5311AA6A7 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -128,6 +159,16 @@
 			path = MiTierUITests;
 			sourceTree = "<group>";
 		};
+		D76EB399411811B5311AA6A7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				942E7343E7B0E98B51929A51 /* Pods_MiTier.framework */,
+				98659779C261DD4AAD239594 /* Pods_MiTier_MiTierUITests.framework */,
+				E09A59788D62FA36D8A81E03 /* Pods_MiTierTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -135,9 +176,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 98059B6E24F7C6FA00F12CE1 /* Build configuration list for PBXNativeTarget "MiTier" */;
 			buildPhases = (
+				B8D52542F9146A666202C004 /* [CP] Check Pods Manifest.lock */,
 				98059B4024F7C6FA00F12CE1 /* Sources */,
 				98059B4124F7C6FA00F12CE1 /* Frameworks */,
 				98059B4224F7C6FA00F12CE1 /* Resources */,
+				A9C3008C9EEE40E7C33DF1B2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -152,6 +195,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 98059B7124F7C6FA00F12CE1 /* Build configuration list for PBXNativeTarget "MiTierTests" */;
 			buildPhases = (
+				E164E6B4464DFAA528D57F06 /* [CP] Check Pods Manifest.lock */,
 				98059B5624F7C6FA00F12CE1 /* Sources */,
 				98059B5724F7C6FA00F12CE1 /* Frameworks */,
 				98059B5824F7C6FA00F12CE1 /* Resources */,
@@ -170,9 +214,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 98059B7424F7C6FA00F12CE1 /* Build configuration list for PBXNativeTarget "MiTierUITests" */;
 			buildPhases = (
+				E2E5BAD9C935816F7D899405 /* [CP] Check Pods Manifest.lock */,
 				98059B6124F7C6FA00F12CE1 /* Sources */,
 				98059B6224F7C6FA00F12CE1 /* Frameworks */,
 				98059B6324F7C6FA00F12CE1 /* Resources */,
+				E018556C1BFB21557F7AD629 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -253,6 +299,109 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A9C3008C9EEE40E7C33DF1B2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MiTier/Pods-MiTier-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MiTier/Pods-MiTier-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MiTier/Pods-MiTier-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B8D52542F9146A666202C004 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MiTier-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E018556C1BFB21557F7AD629 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MiTier-MiTierUITests/Pods-MiTier-MiTierUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MiTier-MiTierUITests/Pods-MiTier-MiTierUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MiTier-MiTierUITests/Pods-MiTier-MiTierUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E164E6B4464DFAA528D57F06 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MiTierTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E2E5BAD9C935816F7D899405 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MiTier-MiTierUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		98059B4024F7C6FA00F12CE1 /* Sources */ = {
@@ -432,6 +581,7 @@
 		};
 		98059B6F24F7C6FA00F12CE1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 500F77336FB21F6B89D2AA80 /* Pods-MiTier.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -450,6 +600,7 @@
 		};
 		98059B7024F7C6FA00F12CE1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 953D316D690B55373FEA25D2 /* Pods-MiTier.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -468,6 +619,7 @@
 		};
 		98059B7224F7C6FA00F12CE1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4783D71A41F229C0731CC924 /* Pods-MiTierTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -490,6 +642,7 @@
 		};
 		98059B7324F7C6FA00F12CE1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 43C2207EED117FB8F7A74DEB /* Pods-MiTierTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -512,6 +665,7 @@
 		};
 		98059B7524F7C6FA00F12CE1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1D6DDC377556A4F65DAE4DCB /* Pods-MiTier-MiTierUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -532,6 +686,7 @@
 		};
 		98059B7624F7C6FA00F12CE1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BEB5DB4FBFB6671B299714B4 /* Pods-MiTier-MiTierUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
