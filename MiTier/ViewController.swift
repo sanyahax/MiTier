@@ -238,13 +238,16 @@ class ViewController: UIViewController, MenuControllerDelegate {
         }
         
     }
+    @IBOutlet weak var currentLabel: UILabel!
     @IBAction func didSlideSpeed(sender: UISlider) {
+        
         
         if connectedToVehicle {
             let sliderThumb = UIImage(named: "arrow.left.and.right.square.fill")
             sender.setThumbImage(sliderThumb, for: UIControl.State.normal)
             let speedInt:Int = Int(sender.value)
             print("Speed \(speedInt)")
+            currentLabel.text = "\(speedInt) KM/H"
             sender.isContinuous = false
             cbPassword = passwordController.passwordCB
             passwordController.updatePass()
