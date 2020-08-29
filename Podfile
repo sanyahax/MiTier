@@ -7,6 +7,7 @@ target 'MiTier' do
 
   # Pods for MiTier
 pod 'SideMenu'
+pod 'iOSDropDown'
   target 'MiTierTests' do
     inherit! :search_paths
     # Pods for testing

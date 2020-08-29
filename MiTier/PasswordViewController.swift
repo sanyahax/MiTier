@@ -7,30 +7,80 @@
 //
 
 import UIKit
+import iOSDropDown
+import CoreBluetooth
 
 class PasswordViewController: UIViewController {
 
     var mainview:ViewController?
     
     var passwordCB = "null"
-   let textFiled = UITextField(frame: CGRect(x: 20.0, y: 30.0, width: 100.0, height: 33.0))
+    let textFiled = UITextField(frame: CGRect(x: 180.0, y: 40.0, width: 100.0, height: 33.0))
+    let textFiled2 = UITextField(frame: CGRect(x: 300.0, y: 40.0, width: 100.0, height: 33.0))
+    let dropDown = DropDown(frame: CGRect(x: 20, y: 30, width: 150, height: 60)) // set frame
+    let tierColor = UIColor(red: 106/255.0, green: 209/255.0, blue: 170/255.0, alpha: 1)
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.view.backgroundColor = .systemGray5
+        dropDown.optionArray = ["AT+BKSCT=", "AT+BKLED=", "AT+BKECP="]
+        dropDown.backgroundColor = .systemGray3
+        dropDown.textColor = .black
+        dropDown.rowBackgroundColor = .black
+        dropDown.selectedRowColor = tierColor
         
         textFiled.backgroundColor = .white
         textFiled.textColor = .black
-        textFiled.borderStyle = UITextField.BorderStyle.line
+        textFiled.text = "Password"
+        textFiled.cornerRadius = 5
+        textFiled2.borderStyle = UITextField.BorderStyle.line
+        textFiled2.backgroundColor = .white
+        textFiled2.textColor = .black
+        textFiled2.text = "Params"
+        textFiled2.cornerRadius = 5
+        textFiled2.borderStyle = UITextField.BorderStyle.line
+        
         self.view.addSubview(textFiled)
+        self.view.addSubview(textFiled2)
+        self.view.addSubview(dropDown)
+        
         
         passwordCB = "\(textFiled.text!)"
+        let button = UIButton(frame: CGRect(x: 150, y: 180, width: 100, height: 50))
+        button.backgroundColor = tierColor
+        button.cornerRadius = 25
+        button.titleLabel?.textColor = .black
+        button.setTitle("Write", for: .normal)
+        button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+
+        self.view.addSubview(button)
     }
-    
-    
+
+    @objc func buttonAction(sender: UIButton!) {
+        print("Button tapped")
+        if mainview!.connectedToVehicle {
+            mainview!.vehiclePeripheral.writeValue("\(dropDown.text!)\(textFiled.text!)\(textFiled2.text!)".data(using: String.Encoding.utf8)!, for: mainview!.vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            print("COMMAND WRITTEN: ", dropDown.text!,textFiled.text!,textFiled2.text!)
+            let alert = UIAlertController(title: "Success", message: "Command written to Vehicle.", preferredStyle: UIAlertController.Style.alert)
+            self.present(alert, animated: true, completion: nil)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                alert.dismiss(animated: true, completion: nil)
+            }
+        } else {
+            let alert = UIAlertController(title: "Vehicle not connected!", message: "Please make sure your Vehicle is working.", preferredStyle: .alert)
+            self.present(alert, animated: true, completion: nil)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                alert.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
+
     func updatePass() {
         passwordCB = "\(textFiled.text!)"
         self.view.endEditing(true)
     }
-
+    
+    
+    
 }
+

@@ -1,16 +1,20 @@
 PODS:
+  - iOSDropDown (0.3.4)
   - SideMenu (6.4.9)
 
 DEPENDENCIES:
+  - iOSDropDown
   - SideMenu
 
 SPEC REPOS:
   trunk:
+    - iOSDropDown
     - SideMenu
 
 SPEC CHECKSUMS:
+  iOSDropDown: c10a761f9a00c3f1cc9d3bce43ae504628e2f692
   SideMenu: 8ef57a3cfc024a2d3fc1c036c7fe98537baec9e0
 
-PODFILE CHECKSUM: b27334b55e057eae9f419e13482a95f91510cd7c
+PODFILE CHECKSUM: 53f42a43f9962c3db7120202709cf9cb4068399d
 
 COCOAPODS: 1.9.3
