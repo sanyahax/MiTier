@@ -17,6 +17,9 @@
 		98059B5424F7C6FA00F12CE1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98059B5224F7C6FA00F12CE1 /* LaunchScreen.storyboard */; };
 		98059B5F24F7C6FA00F12CE1 /* MiTierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98059B5E24F7C6FA00F12CE1 /* MiTierTests.swift */; };
 		98059B6A24F7C6FA00F12CE1 /* MiTierUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98059B6924F7C6FA00F12CE1 /* MiTierUITests.swift */; };
+		9870422A24F9D18800F5DE7C /* VehicleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9870422924F9D18800F5DE7C /* VehicleViewController.swift */; };
+		9870422C24F9D1F800F5DE7C /* SideMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9870422B24F9D1F800F5DE7C /* SideMenu.swift */; };
+		9870422E24F9D3E500F5DE7C /* PasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9870422D24F9D3E500F5DE7C /* PasswordViewController.swift */; };
 		C5DE6C25E7BA8FB2D3F326A9 /* Pods_MiTier_MiTierUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98659779C261DD4AAD239594 /* Pods_MiTier_MiTierUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +62,9 @@
 		98059B6924F7C6FA00F12CE1 /* MiTierUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiTierUITests.swift; sourceTree = "<group>"; };
 		98059B6B24F7C6FA00F12CE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		98659779C261DD4AAD239594 /* Pods_MiTier_MiTierUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MiTier_MiTierUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9870422924F9D18800F5DE7C /* VehicleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VehicleViewController.swift; sourceTree = "<group>"; };
+		9870422B24F9D1F800F5DE7C /* SideMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenu.swift; sourceTree = "<group>"; };
+		9870422D24F9D3E500F5DE7C /* PasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordViewController.swift; sourceTree = "<group>"; };
 		BEB5DB4FBFB6671B299714B4 /* Pods-MiTier-MiTierUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MiTier-MiTierUITests.release.xcconfig"; path = "Target Support Files/Pods-MiTier-MiTierUITests/Pods-MiTier-MiTierUITests.release.xcconfig"; sourceTree = "<group>"; };
 		E09A59788D62FA36D8A81E03 /* Pods_MiTierTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MiTierTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -132,6 +138,9 @@
 				98059B4724F7C6FA00F12CE1 /* AppDelegate.swift */,
 				98059B4924F7C6FA00F12CE1 /* SceneDelegate.swift */,
 				98059B4B24F7C6FA00F12CE1 /* ViewController.swift */,
+				9870422924F9D18800F5DE7C /* VehicleViewController.swift */,
+				9870422D24F9D3E500F5DE7C /* PasswordViewController.swift */,
+				9870422B24F9D1F800F5DE7C /* SideMenu.swift */,
 				98059B4D24F7C6FA00F12CE1 /* Main.storyboard */,
 				98059B5024F7C6FA00F12CE1 /* Assets.xcassets */,
 				98059B5224F7C6FA00F12CE1 /* LaunchScreen.storyboard */,
@@ -408,8 +417,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				98059B4C24F7C6FA00F12CE1 /* ViewController.swift in Sources */,
+				9870422A24F9D18800F5DE7C /* VehicleViewController.swift in Sources */,
+				9870422C24F9D1F800F5DE7C /* SideMenu.swift in Sources */,
 				98059B4824F7C6FA00F12CE1 /* AppDelegate.swift in Sources */,
 				98059B4A24F7C6FA00F12CE1 /* SceneDelegate.swift in Sources */,
+				9870422E24F9D3E500F5DE7C /* PasswordViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

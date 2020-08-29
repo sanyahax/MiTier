@@ -24,8 +24,7 @@ extension UIView {
 
 extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        let services = [CBUUID(string: "2c00")]
-        let cmdchar = [CBUUID(string: "2c10")]
+        
         switch central.state {
             
         case .unknown:
@@ -54,6 +53,7 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
     }
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
       print("Connected!")
+      vehicleAB = vehiclePeripheral.name!
       print(vehiclePeripheral)
         vehiclePeripheral.discoverServices([CBUUID(string: "2c00")])
     }
@@ -74,36 +74,104 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
       for characteristic in characteristics {
         print(characteristic)
         vehicleCharacteristic = characteristic
+        connectedToVehicle = true
+        self.vinLabel.text = vehiclePeripheral.name
+        vehicleAB = vehiclePeripheral.name!
+        
+        
       }
+    }
+    func peripheral(_ peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
+        print(peripheral)
+        centralManager.cancelPeripheralConnection(peripheral)
+        connectedToVehicle = false
+        self.vinLabel.text = "Connecting..."
+        centralManager.scanForPeripherals(withServices: services)
+        
+    }
+    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+        
     }
 }
 
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, MenuControllerDelegate {
 
+    var sideMenu: SideMenuNavigationController?
+    let vehicleController = VehicleViewController()
+    let passwordController = PasswordViewController()
     
     var centralManager: CBCentralManager!
     var vehiclePeripheral: CBPeripheral!
     var vehicleCharacteristic:CBCharacteristic!
-    var menu: SideMenuNavigationController?
     var cbPassword = "password"
-    
+    var connectedToVehicle = false
+    var vehicleAB = "Not connected"
+    let services = [CBUUID(string: "2c00")]
+    let cmdchar = [CBUUID(string: "2c10")]
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
         centralManager = CBCentralManager(delegate: self, queue: nil)
         
-        
-        menu = SideMenuNavigationController(rootViewController: MenuListController())
-        menu?.leftSide = true
-        
-        SideMenuManager.default.leftMenuNavigationController = menu
-        SideMenuManager.default.addPanGestureToPresent(toView: self.view)
+        vehicleController.mainview = self
+        passwordController.mainview = self
+        let menu = MenuController(with: SideMenuItem.allCases)
+
+        menu.delegate = self
+
+        sideMenu = SideMenuNavigationController(rootViewController: menu)
+        sideMenu?.leftSide = true
+
+        SideMenuManager.default.leftMenuNavigationController = sideMenu
+        SideMenuManager.default.addPanGestureToPresent(toView: view)
+
+        addChildControllers()
     }
 
+    private func addChildControllers() {
+        addChild(passwordController)
+        addChild(vehicleController)
+        view.addSubview(passwordController.view)
+        view.addSubview(vehicleController.view)
+        passwordController.view.frame = view.bounds
+        vehicleController.view.frame = view.bounds
+        passwordController.didMove(toParent: self)
+        vehicleController.didMove(toParent: self)
+        passwordController.view.isHidden = true
+        vehicleController.view.isHidden = true
+    }
+
+    @IBAction func didTapMenuButton() {
+        present(sideMenu!, animated: true)
+    }
+
+    func didSelectMenuItem(named: SideMenuItem) {
+        sideMenu?.dismiss(animated: true, completion: nil)
+
+        title = named.rawValue
+        switch named {
+        case .vehicle:
+            passwordController.view.isHidden = true
+            vehicleController.view.isHidden = false
+        case .password:
+            passwordController.view.isHidden = false
+            vehicleController.view.isHidden = true
+        case .home:
+            passwordController.view.isHidden = true
+            vehicleController.view.isHidden = true
+        }
+
+    }
     @IBAction func didTapMenu() {
-        present(menu!, animated: true)
+        present(sideMenu!, animated: true)
+        self.view.endEditing(true)
+    }
+    
+    @IBOutlet weak var vinLabel: UILabel!
+    func someFunction() {
+        
     }
     
     var enabled = false
@@ -114,62 +182,95 @@ class ViewController: UIViewController {
         let off_image = UIImage(named: "off")
         
         if !enabled {
-            sender.setImage(on_image, for: .normal)
-            enabled = true
-            print("Vehicle unlocked.")
+            
+            if connectedToVehicle {
+                cbPassword = passwordController.passwordCB
+                passwordController.updatePass()
             vehiclePeripheral.writeValue("AT+BKSCT=\(cbPassword),0$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+                sender.setImage(on_image, for: .normal)
+                enabled = true
+                print("Vehicle unlocked.")
+            } else {
+                let alert = UIAlertController(title: "Vehicle not connected!", message: "Please make sure your Vehicle is working.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                      switch action.style{
+                      case .default:
+                            print("default")
+
+                      case .cancel:
+                            print("cancel")
+
+                      case .destructive:
+                            print("destructive")
+
+
+                }}))
+                self.present(alert, animated: true, completion: nil)
+            }
             
         }
         else if enabled {
-            sender.setImage(off_image, for: .normal)
-            enabled = false
-            print("Vehicle locked")
+            
+            if connectedToVehicle {
+                sender.setImage(off_image, for: .normal)
+                enabled = false
+                print("Vehicle locked")
+                cbPassword = passwordController.passwordCB
+                passwordController.updatePass()
             vehiclePeripheral.writeValue("AT+BKSCT=\(cbPassword),1$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+                }  else {
+                               let alert = UIAlertController(title: "Vehicle not connected!", message: "Please make sure your Vehicle is working.", preferredStyle: .alert)
+                               alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                                     switch action.style{
+                                     case .default:
+                                           print("default")
+
+                                     case .cancel:
+                                           print("cancel")
+
+                                     case .destructive:
+                                           print("destructive")
+
+
+                               }}))
+                               self.present(alert, animated: true, completion: nil)
+                           }
         }
         
     }
     @IBAction func didSlideSpeed(sender: UISlider) {
-        let sliderThumb = UIImage(named: "arrow.left.and.right.square.fill")
-        sender.setThumbImage(sliderThumb, for: UIControl.State.normal)
-        let speedInt:Int = Int(sender.value)
-           print("Speed \(speedInt)")
+        
+        if connectedToVehicle {
+            let sliderThumb = UIImage(named: "arrow.left.and.right.square.fill")
+            sender.setThumbImage(sliderThumb, for: UIControl.State.normal)
+            let speedInt:Int = Int(sender.value)
+            print("Speed \(speedInt)")
+            sender.isContinuous = false
+            cbPassword = passwordController.passwordCB
+            passwordController.updatePass()
         vehiclePeripheral.writeValue("AT+BKECP=\(cbPassword),1,\(speedInt),1,$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            
+        }  else {
+                       let alert = UIAlertController(title: "Vehicle not connected!", message: "Please make sure your Vehicle is working.", preferredStyle: .alert)
+                       alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                             switch action.style{
+                             case .default:
+                                   print("default")
+
+                             case .cancel:
+                                   print("cancel")
+
+                             case .destructive:
+                                   print("destructive")
+
+
+                       }}))
+                       self.present(alert, animated: true, completion: nil)
+                   }
+
+       
     }
 }
-class MenuListController: UITableViewController {
-    var items = ["Change Password"]
-        
-    let darkColor = UIColor(red: 33/255.0, green: 33/255.0, blue: 33/255.0, alpha: 1)
-    let tierColor = UIColor(red: 106/255.0, green: 209/255.0, blue: 170/255.0, alpha: 1)
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        tableView.backgroundColor = darkColor
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = items[indexPath.row]
-        cell.textLabel?.textColor = .black
-        cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 25)
-        cell.textLabel?.numberOfLines = 0
-        cell.textLabel?.highlightedTextColor = .white
-        
-        self.tableView.separatorStyle = .none
-        self.tableView.isScrollEnabled = false
-        self.tableView.tableHeaderView?.backgroundColor = tierColor
-        cell.backgroundColor = tierColor
-        return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-}
+
 
 
