@@ -9,6 +9,7 @@
 import UIKit
 import SideMenu
 import CoreBluetooth
+import iOSDropDown
 
 extension UIView {
     @IBInspectable
@@ -192,20 +193,10 @@ class ViewController: UIViewController, MenuControllerDelegate {
                 print("Vehicle unlocked.")
             } else {
                 let alert = UIAlertController(title: "Vehicle not connected!", message: "Please make sure your Vehicle is working.", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                      switch action.style{
-                      case .default:
-                            print("default")
-
-                      case .cancel:
-                            print("cancel")
-
-                      case .destructive:
-                            print("destructive")
-
-
-                }}))
                 self.present(alert, animated: true, completion: nil)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                    alert.dismiss(animated: true, completion: nil)
+                }
             }
             
         }
@@ -217,24 +208,14 @@ class ViewController: UIViewController, MenuControllerDelegate {
                 print("Vehicle locked")
                 cbPassword = passwordController.passwordCB
                 passwordController.updatePass()
-            vehiclePeripheral.writeValue("AT+BKSCT=\(cbPassword),1$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+                vehiclePeripheral.writeValue("AT+BKSCT=\(cbPassword),1$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
                 }  else {
-                               let alert = UIAlertController(title: "Vehicle not connected!", message: "Please make sure your Vehicle is working.", preferredStyle: .alert)
-                               alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                                     switch action.style{
-                                     case .default:
-                                           print("default")
-
-                                     case .cancel:
-                                           print("cancel")
-
-                                     case .destructive:
-                                           print("destructive")
-
-
-                               }}))
-                               self.present(alert, animated: true, completion: nil)
-                           }
+                    let alert = UIAlertController(title: "Vehicle not connected!", message: "Please make sure your Vehicle is working.", preferredStyle: .alert)
+                    self.present(alert, animated: true, completion: nil)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                    alert.dismiss(animated: true, completion: nil)
+                }
+            }
         }
         
     }
@@ -251,27 +232,15 @@ class ViewController: UIViewController, MenuControllerDelegate {
             sender.isContinuous = false
             cbPassword = passwordController.passwordCB
             passwordController.updatePass()
-        vehiclePeripheral.writeValue("AT+BKECP=\(cbPassword),1,\(speedInt),1,$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            vehiclePeripheral.writeValue("AT+BKECP=\(cbPassword),1,\(speedInt),1,$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
             
         }  else {
-                       let alert = UIAlertController(title: "Vehicle not connected!", message: "Please make sure your Vehicle is working.", preferredStyle: .alert)
-                       alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                             switch action.style{
-                             case .default:
-                                   print("default")
-
-                             case .cancel:
-                                   print("cancel")
-
-                             case .destructive:
-                                   print("destructive")
-
-
-                       }}))
-                       self.present(alert, animated: true, completion: nil)
-                   }
-
-       
+            let alert = UIAlertController(title: "Vehicle not connected!", message: "Please make sure your Vehicle is working.", preferredStyle: .alert)
+            self.present(alert, animated: true, completion: nil)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                alert.dismiss(animated: true, completion: nil)
+            }
+        }
     }
 }
 
