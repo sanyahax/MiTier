@@ -117,8 +117,8 @@ class ViewController: UIViewController, MenuControllerDelegate {
     var cbPassword = "password"
     var connectedToVehicle = false
     var vehicleAB = "Not connected"
-    let services = [CBUUID(string: "2c00")]
-    let cmdchar = [CBUUID(string: "2c10")]
+    let services = [CBUUID(string: "00002c00-0000-1000-8000-00805f9b34fb")]
+    let cmdchar = [CBUUID(string: "00002c10-0000-1000-8000-00805f9b34fb")]
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
