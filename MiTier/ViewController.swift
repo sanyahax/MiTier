@@ -41,6 +41,9 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
         case .poweredOn:
             print("CB.state is on")
             centralManager.scanForPeripherals(withServices: services)
+            
+        @unknown default:
+            print("default")
         }
         
     }
@@ -48,14 +51,17 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
         print(peripheral)
         vehiclePeripheral = peripheral
         centralManager.stopScan()
-        centralManager.connect(vehiclePeripheral)
+        if vehiclePeripheral.name!.contains("AB") {
+            centralManager.connect(vehiclePeripheral)
+        }
+        
         vehiclePeripheral.delegate = self
-        print(vehiclePeripheral)
+        print(vehiclePeripheral ?? "")
     }
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
       print("Connected!")
       vehicleAB = vehiclePeripheral.name!
-      print(vehiclePeripheral)
+      print(vehiclePeripheral ?? "")
         vehiclePeripheral.discoverServices([CBUUID(string: "2c00")])
     }
     
@@ -91,7 +97,10 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
         
     }
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-        
+        vehicleAB = "disconnected"
+    }
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        print(peripheral)
     }
 }
 
