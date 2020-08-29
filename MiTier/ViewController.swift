@@ -51,7 +51,7 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
         print(peripheral)
         vehiclePeripheral = peripheral
         centralManager.stopScan()
-        if vehiclePeripheral.name!.contains("AB") {
+        if vehiclePeripheral.name!.contains("A") {
             centralManager.connect(vehiclePeripheral)
         }
         
@@ -62,7 +62,7 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
       print("Connected!")
       vehicleAB = vehiclePeripheral.name!
       print(vehiclePeripheral ?? "")
-        vehiclePeripheral.discoverServices([CBUUID(string: "2c00")])
+        vehiclePeripheral.discoverServices([CBUUID(string: "00002c00-0000-1000-8000-00805f9b34fb")])
     }
     
 
