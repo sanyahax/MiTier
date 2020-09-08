@@ -43,6 +43,7 @@ class VehicleViewController: UIViewController {
             
         Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { timer in
             if(self.mainview!.connectedToVehicle) {
+                print(self.mainview!.vehiclePeripheral.readValue(for: self.mainview!.vehicleCharacteristic))
                 self.vehicleABN = self.mainview!.vehicleAB
                 self.label.text = "Serial Number: \(self.vehicleABN)"
                 print(self.mainview!.vehiclePeripheral.readValue(for: self.mainview!.vehicleCharacteristic))
