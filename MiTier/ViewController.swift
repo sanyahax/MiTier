@@ -10,7 +10,24 @@ import UIKit
 import SideMenu
 import CoreBluetooth
 import iOSDropDown
-
+extension UIImage {
+    func scaleImage(toSize newSize: CGSize) -> UIImage? {
+        var newImage: UIImage?
+        let newRect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height).integral
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 0)
+        if let context = UIGraphicsGetCurrentContext(), let cgImage = self.cgImage {
+            context.interpolationQuality = .high
+            let flipVertical = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: newSize.height)
+            context.concatenate(flipVertical)
+            context.draw(cgImage, in: newRect)
+            if let img = context.makeImage() {
+                newImage = UIImage(cgImage: img)
+            }
+            UIGraphicsEndImageContext()
+        }
+        return newImage
+    }
+}
 extension UIView {
     @IBInspectable
     var cornerRadius: CGFloat {
@@ -33,14 +50,14 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
         case .resetting:
             print("CB.state is reset")
         case .unsupported:
-            print("CB.state is unsupported")
+            print("CB.state is unsupported.")
         case .unauthorized:
             print("CB.state is unauth")
         case .poweredOff:
             print("CB.state is off")
         case .poweredOn:
             print("CB.state is on")
-            centralManager.scanForPeripherals(withServices: services)
+            centralManager.scanForPeripherals(withServices: nil)
             
         @unknown default:
             print("default")
@@ -51,7 +68,7 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
         print(peripheral)
         vehiclePeripheral = peripheral
         centralManager.stopScan()
-        if vehiclePeripheral.name!.contains("A") {
+        if vehiclePeripheral.name!.contains("AB") {
             centralManager.connect(vehiclePeripheral)
         }
         
@@ -62,7 +79,7 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
       print("Connected!")
       vehicleAB = vehiclePeripheral.name!
       print(vehiclePeripheral ?? "")
-        vehiclePeripheral.discoverServices([CBUUID(string: "00002c00-0000-1000-8000-00805f9b34fb")])
+        vehiclePeripheral.discoverServices([CBUUID(string: "2c00")])
     }
     
 
@@ -72,18 +89,20 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
         guard let services = peripheral.services else { return }
         for service in services {
           print(service)
-          peripheral.discoverCharacteristics(nil, for: service)
+          peripheral.discoverCharacteristics([CBUUID(string: "2c10")], for: service)
         }
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-      guard let characteristics = service.characteristics else { return }
+        guard let characteristics = service.characteristics else { return }
       for characteristic in characteristics {
         print(characteristic)
         vehicleCharacteristic = characteristic
         connectedToVehicle = true
         self.vinLabel.text = vehiclePeripheral.name
         vehicleAB = vehiclePeripheral.name!
+        print(vehicleCharacteristic!)
+        
         
         
       }
@@ -102,6 +121,12 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         print(peripheral)
     }
+    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
+        print(characteristic)
+        print(error.debugDescription)
+        print(characteristic.value)
+        print(characteristic.debugDescription)
+    }
 }
 
 
@@ -114,7 +139,7 @@ class ViewController: UIViewController, MenuControllerDelegate {
     var centralManager: CBCentralManager!
     var vehiclePeripheral: CBPeripheral!
     var vehicleCharacteristic:CBCharacteristic!
-    var cbPassword = "password"
+    var cbPassword = "v2ypjvrpm6"
     var connectedToVehicle = false
     var vehicleAB = "Not connected"
     let services = [CBUUID(string: "00002c00-0000-1000-8000-00805f9b34fb")]
@@ -124,7 +149,7 @@ class ViewController: UIViewController, MenuControllerDelegate {
         // Do any additional setup after loading the view.
         
         centralManager = CBCentralManager(delegate: self, queue: nil)
-        
+        view.snapshotView(afterScreenUpdates: true)
         vehicleController.mainview = self
         passwordController.mainview = self
         let menu = MenuController(with: SideMenuItem.allCases)
@@ -196,7 +221,8 @@ class ViewController: UIViewController, MenuControllerDelegate {
             if connectedToVehicle {
                 cbPassword = passwordController.passwordCB
                 passwordController.updatePass()
-            vehiclePeripheral.writeValue("AT+BKSCT=\(cbPassword),0$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+                vehiclePeripheral.writeValue("AT+BKSCT=\(cbPassword),".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+                vehiclePeripheral.writeValue("0$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic!, type: CBCharacteristicWriteType.withResponse)
                 sender.setImage(on_image, for: .normal)
                 enabled = true
                 print("Vehicle unlocked.")
@@ -217,7 +243,9 @@ class ViewController: UIViewController, MenuControllerDelegate {
                 print("Vehicle locked")
                 cbPassword = passwordController.passwordCB
                 passwordController.updatePass()
-                vehiclePeripheral.writeValue("AT+BKSCT=\(cbPassword),1$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+                vehiclePeripheral.writeValue("AT+BKSCT=\(cbPassword),".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic!, type: CBCharacteristicWriteType.withResponse)
+                vehiclePeripheral.writeValue("1$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic!, type: CBCharacteristicWriteType.withResponse)
+              
                 }  else {
                     let alert = UIAlertController(title: "Vehicle not connected!", message: "Please make sure your Vehicle is working.", preferredStyle: .alert)
                     self.present(alert, animated: true, completion: nil)
@@ -233,15 +261,21 @@ class ViewController: UIViewController, MenuControllerDelegate {
         
         
         if connectedToVehicle {
-            let sliderThumb = UIImage(named: "arrow.left.and.right.square.fill")
-            sender.setThumbImage(sliderThumb, for: UIControl.State.normal)
+            let sliderThumb = UIImage(named: "icon")
+            let sliderThumbHighlighted = UIImage(named: "iconhighlighted")
+            
+            sender.setThumbImage(sliderThumb!.scaleImage(toSize: CGSize(width: 10, height: 10)), for: UIControl.State.normal)
+            sender.setThumbImage(sliderThumbHighlighted!.scaleImage(toSize: CGSize(width: 10, height: 10)), for: UIControl.State.highlighted)
             let speedInt:Int = Int(sender.value)
             print("Speed \(speedInt)")
             currentLabel.text = "\(speedInt) KM/H"
             sender.isContinuous = false
             cbPassword = passwordController.passwordCB
             passwordController.updatePass()
-            vehiclePeripheral.writeValue("AT+BKECP=\(cbPassword),1,\(speedInt),1,$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            
+            vehiclePeripheral.writeValue("AT+BKECP=\(cbPassword),".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            vehiclePeripheral.writeValue("1,\(speedInt),1,$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            
             
         }  else {
             let alert = UIAlertController(title: "Vehicle not connected!", message: "Please make sure your Vehicle is working.", preferredStyle: .alert)

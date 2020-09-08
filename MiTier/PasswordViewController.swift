@@ -14,7 +14,7 @@ class PasswordViewController: UIViewController {
 
     var mainview:ViewController?
     
-    var passwordCB = "null"
+    var passwordCB = "v2ypjvrpm6"
     let textFiled = UITextField(frame: CGRect(x: 180.0, y: 40.0, width: 100.0, height: 33.0))
     let textFiled2 = UITextField(frame: CGRect(x: 300.0, y: 40.0, width: 100.0, height: 33.0))
     let dropDown = DropDown(frame: CGRect(x: 20, y: 30, width: 150, height: 60)) // set frame
@@ -31,7 +31,7 @@ class PasswordViewController: UIViewController {
         
         textFiled.backgroundColor = .white
         textFiled.textColor = .black
-        textFiled.text = "Password"
+        textFiled.text = "v2ypjvrpm6"
         textFiled.cornerRadius = 5
         textFiled2.borderStyle = UITextField.BorderStyle.line
         textFiled2.backgroundColor = .white
@@ -59,7 +59,10 @@ class PasswordViewController: UIViewController {
     @objc func buttonAction(sender: UIButton!) {
         print("Button tapped")
         if mainview!.connectedToVehicle {
-            mainview!.vehiclePeripheral.writeValue("\(dropDown.text!)\(textFiled.text!)\(textFiled2.text!)".data(using: String.Encoding.utf8)!, for: mainview!.vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            mainview!.vehiclePeripheral.writeValue(dropDown.text!.data(using: String.Encoding.utf8)!, for: mainview!.vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            mainview!.vehiclePeripheral.writeValue("\(textFiled.text!),".data(using: String.Encoding.utf8)!, for: mainview!.vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            mainview!.vehiclePeripheral.writeValue(textFiled2.text!.data(using: String.Encoding.utf8)!, for: mainview!.vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            
             print("COMMAND WRITTEN: ", dropDown.text!,textFiled.text!,textFiled2.text!)
             let alert = UIAlertController(title: "Success", message: "Command written to Vehicle.", preferredStyle: UIAlertController.Style.alert)
             self.present(alert, animated: true, completion: nil)
