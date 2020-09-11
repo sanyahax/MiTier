@@ -17,6 +17,7 @@
 		98059B5424F7C6FA00F12CE1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98059B5224F7C6FA00F12CE1 /* LaunchScreen.storyboard */; };
 		98059B5F24F7C6FA00F12CE1 /* MiTierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98059B5E24F7C6FA00F12CE1 /* MiTierTests.swift */; };
 		98059B6A24F7C6FA00F12CE1 /* MiTierUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98059B6924F7C6FA00F12CE1 /* MiTierUITests.swift */; };
+		981AB5372508230F00AB2F34 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 981AB5362508230F00AB2F34 /* AudioToolbox.framework */; };
 		9870422A24F9D18800F5DE7C /* VehicleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9870422924F9D18800F5DE7C /* VehicleViewController.swift */; };
 		9870422C24F9D1F800F5DE7C /* SideMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9870422B24F9D1F800F5DE7C /* SideMenu.swift */; };
 		9870422E24F9D3E500F5DE7C /* PasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9870422D24F9D3E500F5DE7C /* PasswordViewController.swift */; };
@@ -61,6 +62,7 @@
 		98059B6524F7C6FA00F12CE1 /* MiTierUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MiTierUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		98059B6924F7C6FA00F12CE1 /* MiTierUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiTierUITests.swift; sourceTree = "<group>"; };
 		98059B6B24F7C6FA00F12CE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		981AB5362508230F00AB2F34 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		98659779C261DD4AAD239594 /* Pods_MiTier_MiTierUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MiTier_MiTierUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9870422924F9D18800F5DE7C /* VehicleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VehicleViewController.swift; sourceTree = "<group>"; };
 		9870422B24F9D1F800F5DE7C /* SideMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenu.swift; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7204104A5C81411D5F5F782E /* Pods_MiTier.framework in Frameworks */,
+				981AB5372508230F00AB2F34 /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -170,6 +173,7 @@
 		D76EB399411811B5311AA6A7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				981AB5362508230F00AB2F34 /* AudioToolbox.framework */,
 				942E7343E7B0E98B51929A51 /* Pods_MiTier.framework */,
 				98659779C261DD4AAD239594 /* Pods_MiTier_MiTierUITests.framework */,
 				E09A59788D62FA36D8A81E03 /* Pods_MiTierTests.framework */,
@@ -526,7 +530,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -580,7 +584,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -595,6 +599,7 @@
 			baseConfigurationReference = 500F77336FB21F6B89D2AA80 /* Pods-MiTier.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MiTier/MiTier.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2ZY2GY9Z2J;
 				INFOPLIST_FILE = MiTier/Info.plist;
@@ -614,6 +619,7 @@
 			baseConfigurationReference = 953D316D690B55373FEA25D2 /* Pods-MiTier.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MiTier/MiTier.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2ZY2GY9Z2J;
 				INFOPLIST_FILE = MiTier/Info.plist;

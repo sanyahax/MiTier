@@ -10,6 +10,7 @@ import UIKit
 import SideMenu
 import CoreBluetooth
 import iOSDropDown
+import IntentsUI
 extension UIImage {
     func scaleImage(toSize newSize: CGSize) -> UIImage? {
         var newImage: UIImage?
@@ -68,8 +69,14 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
         print(peripheral)
         vehiclePeripheral = peripheral
         centralManager.stopScan()
-        if vehiclePeripheral.name!.contains("AB") {
-            centralManager.connect(vehiclePeripheral)
+        if(serialTextField.text!.isEmpty) {
+            if vehiclePeripheral.name!.contains("AB116") {
+                centralManager.connect(vehiclePeripheral)
+            }
+        } else {
+            if vehiclePeripheral.name!.contains(serialTextField.text!) {
+                centralManager.connect(vehiclePeripheral)
+            }
         }
         
         vehiclePeripheral.delegate = self
@@ -98,6 +105,7 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
       for characteristic in characteristics {
         print(characteristic)
         vehicleCharacteristic = characteristic
+        vehiclePeripheral.setNotifyValue(true, for: vehicleCharacteristic)
         connectedToVehicle = true
         self.vinLabel.text = vehiclePeripheral.name
         vehicleAB = vehiclePeripheral.name!
@@ -119,7 +127,19 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
         vehicleAB = "disconnected"
     }
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        print(peripheral)
+        
+        if let string = String(bytes: characteristic.value!, encoding: .utf8) {
+            print(string)
+            if laststatus == true {
+                var statusArray = string
+                print(statusArray)
+                laststatus = false
+            }
+        } else {
+            print("not a valid UTF-8 sequence")
+        }
+    
+        
     }
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
         print(characteristic)
@@ -139,7 +159,12 @@ class ViewController: UIViewController, MenuControllerDelegate {
     var centralManager: CBCentralManager!
     var vehiclePeripheral: CBPeripheral!
     var vehicleCharacteristic:CBCharacteristic!
-    var cbPassword = "v2ypjvrpm6"
+    var cbPassword = ""
+    var vehicleDataINF = ""
+    var lockStatus = true
+    var battery = ""
+    var totalrange = ""
+    var laststatus = false
     var connectedToVehicle = false
     var vehicleAB = "Not connected"
     let services = [CBUUID(string: "00002c00-0000-1000-8000-00805f9b34fb")]
@@ -209,7 +234,33 @@ class ViewController: UIViewController, MenuControllerDelegate {
         
     }
     
+    @IBOutlet weak var serialTextField: UITextField!
+    
+    @IBAction func changeValueSerial(_ sender: UITextField) {
+        if sender.endEditing(true) {
+            centralManager.cancelPeripheralConnection(vehiclePeripheral)
+            centralManager.scanForPeripherals(withServices: services)
+        }
+    }
     var enabled = false
+    
+    @IBAction func didTapWRN(sender: UIButton) {
+        if connectedToVehicle {
+            cbPassword = passwordController.passwordCB
+            passwordController.updatePass()
+            laststatus = true
+            vehiclePeripheral.writeValue("AT+BKINF=\(cbPassword),".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            vehiclePeripheral.writeValue("1$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic!, type: CBCharacteristicWriteType.withResponse)
+            enabled = true
+            print("Vehicle blink.")
+        } else {
+            let alert = UIAlertController(title: "Vehicle not connected!", message: "Please make sure your Vehicle is working.", preferredStyle: .alert)
+            self.present(alert, animated: true, completion: nil)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                alert.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
     
     @IBAction func didTapScooter(sender: UIButton) {
         
@@ -285,7 +336,5 @@ class ViewController: UIViewController, MenuControllerDelegate {
             }
         }
     }
+    
 }
-
-
-
