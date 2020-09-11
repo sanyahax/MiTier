@@ -70,7 +70,7 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
         vehiclePeripheral = peripheral
         centralManager.stopScan()
         if(serialTextField.text!.isEmpty) {
-            if vehiclePeripheral.name!.contains("AB116") { // <== CHANGE TO HARDCODE
+            if vehiclePeripheral.name!.contains("AB") { // <== CHANGE TO HARDCODE
                 centralManager.connect(vehiclePeripheral)
             }
         } else {
@@ -135,6 +135,7 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
             if(string.contains("+ACK:BKINF")) {
                 let status = string.components(separatedBy: ",")
                 print("Locked: \(status[1])")
+                print("Speed: \(status[2])")
                 if(status[1] == "1") {
                     enabled = false
                 }
