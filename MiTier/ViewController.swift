@@ -187,6 +187,7 @@ class ViewController: UIViewController, MenuControllerDelegate {
     var speedkmh = ""
     let services = [CBUUID(string: "00002c00-0000-1000-8000-00805f9b34fb")]
     let cmdchar = [CBUUID(string: "00002c10-0000-1000-8000-00805f9b34fb")]
+    let defaults = UserDefaults.standard
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -206,6 +207,8 @@ class ViewController: UIViewController, MenuControllerDelegate {
         SideMenuManager.default.addPanGestureToPresent(toView: view)
 
         addChildControllers()
+        sliderToSetValue.value = defaults.float(forKey: "SliderValue")
+        currentLabel.text = "\(defaults.integer(forKey: "SliderValue"))KM/H"
     }
 
     private func addChildControllers() {
@@ -326,6 +329,7 @@ class ViewController: UIViewController, MenuControllerDelegate {
         }
         
     }
+    @IBOutlet weak var sliderToSetValue: UISlider!
     @IBOutlet weak var currentLabel: UILabel!
     @IBAction func didSlideSpeed(sender: UISlider) {
         
@@ -343,6 +347,8 @@ class ViewController: UIViewController, MenuControllerDelegate {
             sender.isContinuous = false
             cbPassword = passwordController.passwordCB
             passwordController.updatePass()
+            
+            defaults.set(speedInt, forKey: "SliderValue")
             
             vehiclePeripheral.writeValue("AT+BKECP=\(cbPassword),".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
             vehiclePeripheral.writeValue("1,\(speedInt),1,$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
