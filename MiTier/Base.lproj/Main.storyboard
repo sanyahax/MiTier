@@ -126,6 +126,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="currentLabel" destination="ACo-Y5-eXJ" id="SvU-DA-jzo"/>
+                        <outlet property="scooterTapButton" destination="lK1-bc-S5R" id="dVb-eV-GDt"/>
                         <outlet property="serialTextField" destination="C9f-Nh-gXf" id="9DQ-hV-OBS"/>
                         <outlet property="vinLabel" destination="r6K-Ng-iBY" id="iuU-cl-BpD"/>
                     </connections>
