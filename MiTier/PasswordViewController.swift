@@ -14,7 +14,7 @@ class PasswordViewController: UIViewController {
 
     var mainview:ViewController?
     
-    var passwordCB = "v2ypjvrpm6"
+    var passwordCB = "v2ypjvrpm6" // <== CHANGE TO HARDCODE
     let textFiled = UITextField(frame: CGRect(x: 180.0, y: 40.0, width: 100.0, height: 33.0))
     let textFiled2 = UITextField(frame: CGRect(x: 300.0, y: 40.0, width: 100.0, height: 33.0))
     let dropDown = DropDown(frame: CGRect(x: 20, y: 30, width: 150, height: 60)) // set frame
@@ -31,7 +31,7 @@ class PasswordViewController: UIViewController {
         
         textFiled.backgroundColor = .white
         textFiled.textColor = .black
-        textFiled.text = "v2ypjvrpm6"
+        textFiled.text = passwordCB
         textFiled.cornerRadius = 5
         textFiled2.borderStyle = UITextField.BorderStyle.line
         textFiled2.backgroundColor = .white

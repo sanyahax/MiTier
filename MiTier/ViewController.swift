@@ -70,7 +70,7 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
         vehiclePeripheral = peripheral
         centralManager.stopScan()
         if(serialTextField.text!.isEmpty) {
-            if vehiclePeripheral.name!.contains("AB116") {
+            if vehiclePeripheral.name!.contains("AB116") { // <== CHANGE TO HARDCODE
                 centralManager.connect(vehiclePeripheral)
             }
         } else {
@@ -110,6 +110,8 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
         self.vinLabel.text = vehiclePeripheral.name
         vehicleAB = vehiclePeripheral.name!
         print(vehicleCharacteristic!)
+        vehiclePeripheral.writeValue("AT+BKINF=\(passwordController.passwordCB),".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic!, type: CBCharacteristicWriteType.withResponse)
+        vehiclePeripheral.writeValue("1$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic!, type: CBCharacteristicWriteType.withResponse)
         
         
         
@@ -130,12 +132,25 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
         
         if let string = String(bytes: characteristic.value!, encoding: .utf8) {
             //print(string)
-            if(string.contains("0$")) {
-                var status = string.components(separatedBy: ",")
-                battery = status[3]
-                totalrange = status[1]
-                print("Battery: \(battery)")
-                print("Total Range: \(totalrange)")
+            if(string.contains("+ACK:BKINF")) {
+                let status = string.components(separatedBy: ",")
+                print("Locked: \(status[1])")
+                if(status[1] == "1") {
+                    enabled = false
+                }
+                if(status[1] == "0") {
+                    enabled = true
+                }
+            }
+            if(string.contains("$")) {
+                
+                let status = string.components(separatedBy: ",")
+                if(status.endIndex > 2) {
+                    battery = status[3]
+                    totalrange = status[1]
+                    print("Battery: \(battery)")
+                    print("Total Range: \(totalrange)")
+                }
             }
         } else {
             print("not a valid UTF-8 sequence")
@@ -144,10 +159,10 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
         
     }
     func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
-        print(characteristic)
-        print(error.debugDescription)
-        print(characteristic.value)
-        print(characteristic.debugDescription)
+        //print(characteristic)
+        //print(error.debugDescription)
+        //print(characteristic.value)
+        //print(characteristic.debugDescription)
     }
 }
 
@@ -169,6 +184,7 @@ class ViewController: UIViewController, MenuControllerDelegate {
     var laststatus = false
     var connectedToVehicle = false
     var vehicleAB = "Not connected"
+    var speedkmh = ""
     let services = [CBUUID(string: "00002c00-0000-1000-8000-00805f9b34fb")]
     let cmdchar = [CBUUID(string: "00002c10-0000-1000-8000-00805f9b34fb")]
     override func viewDidLoad() {
@@ -205,6 +221,7 @@ class ViewController: UIViewController, MenuControllerDelegate {
         vehicleController.view.isHidden = true
     }
 
+    @IBOutlet weak var scooterTapButton: UIButton!
     @IBAction func didTapMenuButton() {
         present(sideMenu!, animated: true)
     }
@@ -251,7 +268,7 @@ class ViewController: UIViewController, MenuControllerDelegate {
             cbPassword = passwordController.passwordCB
             passwordController.updatePass()
             laststatus = true
-            vehiclePeripheral.writeValue("AT+BKINF=\(cbPassword),".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            vehiclePeripheral.writeValue("AT+BKWRN=\(cbPassword),".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
             vehiclePeripheral.writeValue("1$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic!, type: CBCharacteristicWriteType.withResponse)
             enabled = true
             print("Vehicle blink.")
@@ -321,6 +338,7 @@ class ViewController: UIViewController, MenuControllerDelegate {
             sender.setThumbImage(sliderThumbHighlighted!.scaleImage(toSize: CGSize(width: 10, height: 10)), for: UIControl.State.highlighted)
             let speedInt:Int = Int(sender.value)
             print("Speed \(speedInt)")
+            speedkmh = String(speedInt)
             currentLabel.text = "\(speedInt) KM/H"
             sender.isContinuous = false
             cbPassword = passwordController.passwordCB
