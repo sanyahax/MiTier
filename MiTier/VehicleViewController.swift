@@ -12,7 +12,6 @@ import CoreBluetooth
 class VehicleViewController: UIViewController {
     
     var mainview:ViewController?
-    var vehicleABN = ""
     var vehicleBatt = 100
     var vehicleRange = 0
     var vehicleTotal = 0
@@ -26,28 +25,27 @@ class VehicleViewController: UIViewController {
 
         self.view.backgroundColor = .systemGray5
         let vehicleAB = mainview!.vehicleAB
-        vehicleABN = vehicleAB
 
-        label.text = "Serial Number: \(vehicleAB)"
-        label2.text = "Battery: \(vehicleBatt)%"
+        label.text = "Serial Number: \(mainview!.vehicleAB)"
+        label2.text = "Battery: \(mainview!.battery)%"
         label3.text = "Range: \(vehicleRange)km"
-        label4.text = "Total: \(vehicleTotal)km"
+        label4.text = "Total: \(mainview!.totalrange)km"
         self.view.addSubview(label)
         self.view.addSubview(label2)
         self.view.addSubview(label3)
         self.view.addSubview(label4)
-        //updateData()
+        updateData()
+        
     }
     
     func updateData() {
             
         Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { timer in
             if(self.mainview!.connectedToVehicle) {
-                print(self.mainview!.vehiclePeripheral.readValue(for: self.mainview!.vehicleCharacteristic))
-                self.vehicleABN = self.mainview!.vehicleAB
-                self.label.text = "Serial Number: \(self.vehicleABN)"
-                print(self.mainview!.vehiclePeripheral.readValue(for: self.mainview!.vehicleCharacteristic))
-                self.label2.text = "Battery: \(self.mainview!.vehiclePeripheral.readValue(for: self.mainview!.vehicleCharacteristic))%"
+                self.label.text = "Serial Number: \(self.mainview!.vehicleAB)"
+                self.label2.text = "Battery: \(self.mainview!.battery)%"
+                self.label3.text = "Range:"
+                self.label4.text = "Total Range: \(self.mainview!.totalrange)km"
             }
 
             }

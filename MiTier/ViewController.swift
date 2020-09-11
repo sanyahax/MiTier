@@ -129,11 +129,13 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         
         if let string = String(bytes: characteristic.value!, encoding: .utf8) {
-            print(string)
-            if laststatus == true {
-                var statusArray = string
-                print(statusArray)
-                laststatus = false
+            //print(string)
+            if(string.contains("0$")) {
+                var status = string.components(separatedBy: ",")
+                battery = status[3]
+                totalrange = status[1]
+                print("Battery: \(battery)")
+                print("Total Range: \(totalrange)")
             }
         } else {
             print("not a valid UTF-8 sequence")
