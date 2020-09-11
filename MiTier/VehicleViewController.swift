@@ -41,7 +41,7 @@ class VehicleViewController: UIViewController {
     
     func updateData() {
             
-        Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { timer in
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
             if(self.mainview!.connectedToVehicle) {
                 self.mainview!.vehiclePeripheral.writeValue("AT+BKINF=\(self.mainview!.passwordController.passwordCB),".data(using: String.Encoding.utf8)!, for: self.mainview!.vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
                 self.mainview!.vehiclePeripheral.writeValue("1$\r\n".data(using: String.Encoding.utf8)!, for: self.mainview!.vehicleCharacteristic!, type: CBCharacteristicWriteType.withResponse)

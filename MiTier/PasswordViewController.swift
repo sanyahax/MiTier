@@ -13,15 +13,15 @@ import CoreBluetooth
 class PasswordViewController: UIViewController {
 
     var mainview:ViewController?
-    
-    var passwordCB = "v2ypjvrpm6" // <== CHANGE TO HARDCODE
+    let defaults = UserDefaults.standard
+    var passwordCB = "" // <== CHANGE TO HARDCODE
     let textFiled = UITextField(frame: CGRect(x: 180.0, y: 40.0, width: 100.0, height: 33.0))
     let textFiled2 = UITextField(frame: CGRect(x: 300.0, y: 40.0, width: 100.0, height: 33.0))
     let dropDown = DropDown(frame: CGRect(x: 20, y: 30, width: 150, height: 60)) // set frame
     let tierColor = UIColor(red: 106/255.0, green: 209/255.0, blue: 170/255.0, alpha: 1)
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        passwordCB = defaults.string(forKey: "BLEPassword")!
         self.view.backgroundColor = .systemGray5
         dropDown.optionArray = ["AT+BKSCT=", "AT+BKLED=", "AT+BKECP="]
         dropDown.backgroundColor = .systemGray3
@@ -45,7 +45,9 @@ class PasswordViewController: UIViewController {
         self.view.addSubview(dropDown)
         
         
-        passwordCB = "\(textFiled.text!)"
+        
+        
+        
         let button = UIButton(frame: CGRect(x: 150, y: 180, width: 100, height: 50))
         button.backgroundColor = tierColor
         button.cornerRadius = 25
@@ -57,6 +59,7 @@ class PasswordViewController: UIViewController {
     }
 
     @objc func buttonAction(sender: UIButton!) {
+        defaults.set(textFiled.text!, forKey: "BLEPassword")
         print("Button tapped")
         if mainview!.connectedToVehicle {
             mainview!.vehiclePeripheral.writeValue(dropDown.text!.data(using: String.Encoding.utf8)!, for: mainview!.vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
