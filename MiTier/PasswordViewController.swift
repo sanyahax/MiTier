@@ -34,9 +34,9 @@ class PasswordViewController: UIViewController {
         textFiled.text = passwordCB
         textFiled.cornerRadius = 5
         textFiled2.borderStyle = UITextField.BorderStyle.line
-        textFiled2.backgroundColor = .white
+        textFiled2.backgroundColor = .lightGray
         textFiled2.textColor = .black
-        textFiled2.text = "Params"
+        textFiled2.placeholder = "Params"
         textFiled2.cornerRadius = 5
         textFiled2.borderStyle = UITextField.BorderStyle.line
         
