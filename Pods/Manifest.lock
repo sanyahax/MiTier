@@ -1,20 +1,24 @@
 PODS:
+  - GDGauge (1.2.0)
   - iOSDropDown (0.3.4)
   - SideMenu (6.4.9)
 
 DEPENDENCIES:
+  - GDGauge
   - iOSDropDown
   - SideMenu
 
 SPEC REPOS:
   trunk:
+    - GDGauge
     - iOSDropDown
     - SideMenu
 
 SPEC CHECKSUMS:
+  GDGauge: a1cdffd23e7e79f0f7d9ac84a421524119159c0c
   iOSDropDown: c10a761f9a00c3f1cc9d3bce43ae504628e2f692
   SideMenu: 8ef57a3cfc024a2d3fc1c036c7fe98537baec9e0
 
-PODFILE CHECKSUM: 53f42a43f9962c3db7120202709cf9cb4068399d
+PODFILE CHECKSUM: 261c06b4e783a4bde3550e26ea8a03064e041517
 
 COCOAPODS: 1.9.3

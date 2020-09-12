@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreBluetooth
+import GDGauge
 
 class VehicleViewController: UIViewController {
     
@@ -23,7 +24,6 @@ class VehicleViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         self.view.backgroundColor = .systemGray5
 
         label.text = "Serial Number: \(mainview!.vehicleAB)"
@@ -40,9 +40,15 @@ class VehicleViewController: UIViewController {
     }
     
     func updateData() {
-            
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-            if(self.mainview!.connectedToVehicle) {
+            let gaugeView: GDGaugeView = GDGaugeView(frame: view.bounds)
+            gaugeView.setupGuage(startDegree: 60, endDegree: 300, sectionGap: 5, minValue: 0, maxValue: 45)
+            gaugeView.setupContainer(width: 100, color: .black, handleColor: .red, shouldShowContainerBorder: true, shouldShowFullCircle: true, indicatorsColor: .white, indicatorsValuesColor: .white, indicatorsFont: .boldSystemFont(ofSize: 15))
+            gaugeView.setupUnitTitle(title: "KM/H")
+            gaugeView.updateValueTo(CGFloat(mainview!.speednow))
+            gaugeView.buildGauge()
+        self.view.addSubview(gaugeView)
+        Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { timer in
+            if(self.mainview!.connectedToVehicle == true) {
                 self.mainview!.vehiclePeripheral.writeValue("AT+BKINF=\(self.mainview!.passwordController.passwordCB),".data(using: String.Encoding.utf8)!, for: self.mainview!.vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
                 self.mainview!.vehiclePeripheral.writeValue("1$\r\n".data(using: String.Encoding.utf8)!, for: self.mainview!.vehicleCharacteristic!, type: CBCharacteristicWriteType.withResponse)
                 self.label.text = "Serial Number: \(self.mainview!.vehicleAB)"
@@ -50,6 +56,7 @@ class VehicleViewController: UIViewController {
                 self.label2.text = "Battery: \(self.mainview!.battery)%"
                 self.label3.text = "Range: \(self.vehicleRange)km"
                 self.label4.text = "Total Range: \(self.mainview!.totalrange)km"
+                gaugeView.updateValueTo(CGFloat(self.mainview!.speednow))
                 if(self.mainview!.enabled) {
                     let on_image = UIImage(named: "on")
                     self.mainview!.scooterTapButton.setImage(on_image, for: .normal)
@@ -58,6 +65,8 @@ class VehicleViewController: UIViewController {
                     let off_image = UIImage(named: "off")
                     self.mainview!.scooterTapButton.setImage(off_image, for: .normal)
                 }
+            } else {
+                print("notconnect")
             }
 
             }

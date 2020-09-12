@@ -1,0 +1,6 @@
+framework module GDGauge {
+  umbrella header "GDGauge-umbrella.h"
+
+  export *
+  module * { export * }
+}

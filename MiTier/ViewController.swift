@@ -11,6 +11,8 @@ import SideMenu
 import CoreBluetooth
 import iOSDropDown
 import IntentsUI
+import GDGauge
+
 extension UIImage {
     func scaleImage(toSize newSize: CGSize) -> UIImage? {
         var newImage: UIImage?
@@ -48,14 +50,19 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
             
         case .unknown:
             print("CB.state is unknown")
+            connectedToVehicle = false
         case .resetting:
             print("CB.state is reset")
+            connectedToVehicle = false
         case .unsupported:
             print("CB.state is unsupported.")
+            connectedToVehicle = false
         case .unauthorized:
             print("CB.state is unauth")
+            connectedToVehicle = false
         case .poweredOff:
             print("CB.state is off")
+            connectedToVehicle = false
         case .poweredOn:
             print("CB.state is on")
             centralManager.scanForPeripherals(withServices: nil)
@@ -70,7 +77,7 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
         vehiclePeripheral = peripheral
         centralManager.stopScan()
         if(serialTextField.text!.isEmpty) {
-            if vehiclePeripheral.name!.contains("AB") { // <== CHANGE TO HARDCODE
+            if vehiclePeripheral.name!.contains("AB1") { // <== CHANGE TO HARDCODE
                 centralManager.connect(vehiclePeripheral)
             }
         } else {
@@ -127,6 +134,19 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
     }
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         vehicleAB = "disconnected"
+        connectedToVehicle = false
+        self.vinLabel.text = "Connecting..."
+        centralManager.scanForPeripherals(withServices: services)
+        if(serialTextField.text!.isEmpty) {
+            if vehiclePeripheral.name!.contains("AB1") { // <== CHANGE TO HARDCODE
+                centralManager.connect(vehiclePeripheral)
+            }
+        } else {
+            if vehiclePeripheral.name!.contains(serialTextField.text!) {
+                centralManager.connect(vehiclePeripheral)
+            }
+        }
+        scooterTapButton.setImage(UIImage(named: "off"), for: .normal)
     }
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         
@@ -136,6 +156,7 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
                 let status = string.components(separatedBy: ",")
                 print("Locked: \(status[1])")
                 print("Speed: \(status[2])")
+                speednow = Int(Double(status[2])!)
                 if(status[1] == "1") {
                     enabled = false
                 }
@@ -174,6 +195,7 @@ class ViewController: UIViewController, MenuControllerDelegate {
     let vehicleController = VehicleViewController()
     let passwordController = PasswordViewController()
     
+    
     var centralManager: CBCentralManager!
     var vehiclePeripheral: CBPeripheral!
     var vehicleCharacteristic:CBCharacteristic!
@@ -186,6 +208,7 @@ class ViewController: UIViewController, MenuControllerDelegate {
     var connectedToVehicle = false
     var vehicleAB = "Not connected"
     var speedkmh = ""
+    var speednow = 0
     let services = [CBUUID(string: "00002c00-0000-1000-8000-00805f9b34fb")]
     let cmdchar = [CBUUID(string: "00002c10-0000-1000-8000-00805f9b34fb")]
     let defaults = UserDefaults.standard
@@ -198,7 +221,7 @@ class ViewController: UIViewController, MenuControllerDelegate {
         vehicleController.mainview = self
         passwordController.mainview = self
         let menu = MenuController(with: SideMenuItem.allCases)
-
+        
         menu.delegate = self
 
         sideMenu = SideMenuNavigationController(rootViewController: menu)
@@ -210,8 +233,9 @@ class ViewController: UIViewController, MenuControllerDelegate {
         addChildControllers()
         sliderToSetValue.value = defaults.float(forKey: "SliderValue")
         currentLabel.text = "\(defaults.integer(forKey: "SliderValue"))KM/H"
+    
     }
-
+    
     private func addChildControllers() {
         addChild(passwordController)
         addChild(vehicleController)
@@ -229,7 +253,18 @@ class ViewController: UIViewController, MenuControllerDelegate {
     @IBAction func didTapMenuButton() {
         present(sideMenu!, animated: true)
     }
-
+    
+    func speedFunc() {
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+            print(self.speednow)
+            if self.speednow > 30 {
+                self.vehiclePeripheral.writeValue("AT+BKWRN=\(self.cbPassword),".data(using: String.Encoding.utf8)!, for: self.vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+                self.vehiclePeripheral.writeValue("1$\r\n".data(using: String.Encoding.utf8)!, for: self.vehicleCharacteristic!, type: CBCharacteristicWriteType.withResponse)
+            } else {
+                print("succ")
+            }
+        }
+    }
     func didSelectMenuItem(named: SideMenuItem) {
         sideMenu?.dismiss(animated: true, completion: nil)
 
@@ -263,6 +298,9 @@ class ViewController: UIViewController, MenuControllerDelegate {
         if sender.endEditing(true) {
             centralManager.cancelPeripheralConnection(vehiclePeripheral)
             centralManager.scanForPeripherals(withServices: services)
+            if vehiclePeripheral.name!.contains(serialTextField.text!) {
+                centralManager.connect(vehiclePeripheral)
+            }
         }
     }
     var enabled = false
