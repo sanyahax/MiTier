@@ -63,9 +63,11 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
         case .poweredOff:
             print("CB.state is off")
             connectedToVehicle = false
+            vinLabel.text = "BLE off"
         case .poweredOn:
             print("CB.state is on")
             centralManager.scanForPeripherals(withServices: nil)
+            vinLabel.text = "Connecting..."
             
         @unknown default:
             print("default")
@@ -168,8 +170,14 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
                 
                 let status = string.components(separatedBy: ",")
                 if(status.endIndex > 2) {
+                    if(status[4] == "1") {
+                        hheadlightswitch.setOn(true, animated: false)
+                    } else if(status[4] == "0"){
+                        hheadlightswitch.setOn(false, animated: false)
+                    }
                     battery = status[3]
-                    totalrange = status[1]
+                    let totalrange2 = round(Double(status[1])!) ?? 100000.0
+                    totalrange = String(totalrange2-100000)
                     print("Battery: \(battery)")
                     print("Total Range: \(totalrange)")
                 }
@@ -207,11 +215,14 @@ class ViewController: UIViewController, MenuControllerDelegate {
     var laststatus = false
     var connectedToVehicle = false
     var vehicleAB = "Not connected"
-    var speedkmh = ""
+    var speedkmh = "1"
     var speednow = 0
     let services = [CBUUID(string: "00002c00-0000-1000-8000-00805f9b34fb")]
     let cmdchar = [CBUUID(string: "00002c10-0000-1000-8000-00805f9b34fb")]
     let defaults = UserDefaults.standard
+    var headlight = false
+    var sportmode = false
+    let defaults1 = UserDefaults.standard
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -221,9 +232,18 @@ class ViewController: UIViewController, MenuControllerDelegate {
         vehicleController.mainview = self
         passwordController.mainview = self
         let menu = MenuController(with: SideMenuItem.allCases)
-        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
         menu.delegate = self
-
+        if defaults.bool(forKey: "sportmode") == true {
+            sportswitchc.setOn(true, animated: false)
+        } else {
+            sportswitchc.setOn(false, animated: false)
+        }
+        if defaults.bool(forKey: "headlight") == true {
+            hheadlightswitch.setOn(true, animated: false)
+        } else {
+            hheadlightswitch.setOn(false, animated: false)
+        }
         sideMenu = SideMenuNavigationController(rootViewController: menu)
         sideMenu?.leftSide = true
 
@@ -231,11 +251,15 @@ class ViewController: UIViewController, MenuControllerDelegate {
         SideMenuManager.default.addPanGestureToPresent(toView: view)
 
         addChildControllers()
+        view.addGestureRecognizer(tap)
         sliderToSetValue.value = defaults.float(forKey: "SliderValue")
         currentLabel.text = "\(defaults.integer(forKey: "SliderValue"))KM/H"
     
     }
-    
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
     private func addChildControllers() {
         addChild(passwordController)
         addChild(vehicleController)
@@ -254,6 +278,45 @@ class ViewController: UIViewController, MenuControllerDelegate {
         present(sideMenu!, animated: true)
     }
     
+    @IBOutlet weak var sportswitchc: UISwitch!
+    @IBOutlet weak var hheadlightswitch: UISwitch!
+    @IBOutlet weak var sport2: UISwitch!
+    @IBAction func sportSwitchh(_ sender: UISwitch) {
+        if sender.isOn {
+            vehiclePeripheral.writeValue("AT+BKECP=\(cbPassword),".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            vehiclePeripheral.writeValue("1,,1,$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            defaults.setValue(true, forKey: "sportmode")
+            sportmode = true
+        } else if !sender.isOn{
+            vehiclePeripheral.writeValue("AT+BKECP=\(cbPassword),".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            vehiclePeripheral.writeValue("1,,0,$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            defaults.setValue(false, forKey: "sportmode")
+        }
+    }
+    @IBOutlet weak var sportswitchc2: UISwitch!
+    @IBAction func sportSwitchh2(_ sender: UISwitch) {
+        if sender.isOn {
+            vehiclePeripheral.writeValue("AT+BKECP=\(cbPassword),".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            vehiclePeripheral.writeValue("1,,,0$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            defaults.setValue(true, forKey: "sportmode")
+            sportmode = true
+        } else if !sender.isOn{
+            vehiclePeripheral.writeValue("AT+BKECP=\(cbPassword),".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            vehiclePeripheral.writeValue("1,,,1$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            defaults.setValue(false, forKey: "sportmode")
+        }
+    }
+    @IBAction func lightSwitchh(_ sender: UISwitch) {
+        if sender.isOn {
+            self.vehiclePeripheral.writeValue("AT+BKLED=\(cbPassword),".data(using: String.Encoding.utf8)!, for: self.vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            self.vehiclePeripheral.writeValue("0,1$\r\n".data(using: String.Encoding.utf8)!, for: self.vehicleCharacteristic!, type: CBCharacteristicWriteType.withResponse)
+            defaults.setValue(true, forKey: "headlight")
+        } else if !sender.isOn{
+            self.vehiclePeripheral.writeValue("AT+BKLED=\(cbPassword),".data(using: String.Encoding.utf8)!, for: self.vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            self.vehiclePeripheral.writeValue("0,0$\r\n".data(using: String.Encoding.utf8)!, for: self.vehicleCharacteristic!, type: CBCharacteristicWriteType.withResponse)
+            defaults.setValue(false, forKey: "headlight")
+        }
+    }
     func speedFunc() {
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
             print(self.speednow)
@@ -338,6 +401,16 @@ class ViewController: UIViewController, MenuControllerDelegate {
                 sender.setImage(on_image, for: .normal)
                 enabled = true
                 print("Vehicle unlocked.")
+                if(hheadlightswitch.isOn) {
+                    print("nice")
+                    
+                } else {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        self.vehiclePeripheral.writeValue("AT+BKLED=\(self.cbPassword),".data(using: String.Encoding.utf8)!, for: self.vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+                        self.vehiclePeripheral.writeValue("0,0$\r\n".data(using: String.Encoding.utf8)!, for: self.vehicleCharacteristic!, type: CBCharacteristicWriteType.withResponse)
+                    }
+                }
+                
             } else {
                 let alert = UIAlertController(title: "Vehicle not connected!", message: "Please make sure your Vehicle is working.", preferredStyle: .alert)
                 self.present(alert, animated: true, completion: nil)
@@ -357,7 +430,16 @@ class ViewController: UIViewController, MenuControllerDelegate {
                 passwordController.updatePass()
                 vehiclePeripheral.writeValue("AT+BKSCT=\(cbPassword),".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic!, type: CBCharacteristicWriteType.withResponse)
                 vehiclePeripheral.writeValue("1$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic!, type: CBCharacteristicWriteType.withResponse)
-              
+                if(hheadlightswitch.isOn) {
+                    print("nice")
+                    
+                } else {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        self.vehiclePeripheral.writeValue("AT+BKLED=\(self.cbPassword),".data(using: String.Encoding.utf8)!, for: self.vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+                        self.vehiclePeripheral.writeValue("0,0$\r\n".data(using: String.Encoding.utf8)!, for: self.vehicleCharacteristic!, type: CBCharacteristicWriteType.withResponse)
+                    }
+                    
+                }
                 }  else {
                     let alert = UIAlertController(title: "Vehicle not connected!", message: "Please make sure your Vehicle is working.", preferredStyle: .alert)
                     self.present(alert, animated: true, completion: nil)
@@ -379,7 +461,10 @@ class ViewController: UIViewController, MenuControllerDelegate {
             
             sender.setThumbImage(sliderThumb!.scaleImage(toSize: CGSize(width: 10, height: 10)), for: UIControl.State.normal)
             sender.setThumbImage(sliderThumbHighlighted!.scaleImage(toSize: CGSize(width: 10, height: 10)), for: UIControl.State.highlighted)
-            let speedInt:Int = Int(sender.value)
+            var speedInt:Int = Int(sender.value)
+            if( speedInt == 0) {
+                speedInt = 1
+            }
             print("Speed \(speedInt)")
             speedkmh = String(speedInt)
             currentLabel.text = "\(speedInt) KM/H"
@@ -390,12 +475,12 @@ class ViewController: UIViewController, MenuControllerDelegate {
             defaults.set(speedInt, forKey: "SliderValue")
             
             vehiclePeripheral.writeValue("AT+BKECP=\(cbPassword),".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
-            vehiclePeripheral.writeValue("1,\(speedInt),1,$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
+            vehiclePeripheral.writeValue("1,\(speedInt),,$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic, type: CBCharacteristicWriteType.withResponse)
             
             
         }  else {
             let alert = UIAlertController(title: "Vehicle not connected!", message: "Please make sure your Vehicle is working.", preferredStyle: .alert)
-            self.present(alert, animated: true, completion: nil)
+            //self.present(alert, animated: true, completion: nil)
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
                 alert.dismiss(animated: true, completion: nil)
             }

@@ -24,6 +24,7 @@
 	<string>Used to connect to Vehicle</string>
 	<key>NSUserActivityTypes</key>
 	<array>
+		<string>ConfigurationIntent</string>
 		<string>IntentIntent</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>

@@ -41,6 +41,19 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		98338936250E64B600974C10 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		11D8CA40A0896DB8CF5B4246 /* Pods_MiTierTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MiTierTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		80270D32306AED044B916195 /* Pods-MiTier-MiTierUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MiTier-MiTierUITests.release.xcconfig"; path = "Target Support Files/Pods-MiTier-MiTierUITests/Pods-MiTier-MiTierUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -63,6 +76,7 @@
 		98059B6B24F7C6FA00F12CE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9818338CFE260820667FED44 /* Pods-MiTier-MiTierUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MiTier-MiTierUITests.debug.xcconfig"; path = "Target Support Files/Pods-MiTier-MiTierUITests/Pods-MiTier-MiTierUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		981AB5362508230F00AB2F34 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		98338925250E64B400974C10 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		9870422924F9D18800F5DE7C /* VehicleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VehicleViewController.swift; sourceTree = "<group>"; };
 		9870422B24F9D1F800F5DE7C /* SideMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenu.swift; sourceTree = "<group>"; };
 		9870422D24F9D3E500F5DE7C /* PasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordViewController.swift; sourceTree = "<group>"; };
@@ -177,6 +191,7 @@
 				BC258F0078CADF31068BBDC9 /* Pods_MiTier.framework */,
 				84D521A9688999BCC3002D74 /* Pods_MiTier_MiTierUITests.framework */,
 				11D8CA40A0896DB8CF5B4246 /* Pods_MiTierTests.framework */,
+				98338925250E64B400974C10 /* SwiftUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -193,6 +208,7 @@
 				98059B4124F7C6FA00F12CE1 /* Frameworks */,
 				98059B4224F7C6FA00F12CE1 /* Resources */,
 				F6EC29F23478F09C70061EEB /* [CP] Embed Pods Frameworks */,
+				98338936250E64B600974C10 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
@@ -248,7 +264,7 @@
 		98059B3C24F7C6FA00F12CE1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1160;
+				LastSwiftUpdateCheck = 1200;
 				LastUpgradeCheck = 1160;
 				ORGANIZATIONNAME = Arendai;
 				TargetAttributes = {
@@ -530,7 +546,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -584,7 +600,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.7;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

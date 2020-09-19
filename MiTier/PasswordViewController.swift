@@ -21,7 +21,7 @@ class PasswordViewController: UIViewController {
     let tierColor = UIColor(red: 106/255.0, green: 209/255.0, blue: 170/255.0, alpha: 1)
     override func viewDidLoad() {
         super.viewDidLoad()
-        passwordCB = defaults.string(forKey: "BLEPassword")!
+        passwordCB = defaults.string(forKey: "BLEPassword") ?? ""
         self.view.backgroundColor = .systemGray5
         dropDown.optionArray = ["AT+BKSCT=", "AT+BKLED=", "AT+BKECP="]
         dropDown.backgroundColor = .systemGray3

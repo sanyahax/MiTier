@@ -30,6 +30,10 @@ class VehicleViewController: UIViewController {
         label2.text = "Battery: \(mainview!.battery)%"
         label3.text = "Range: \(vehicleRange)km"
         label4.text = "Total: \(mainview!.totalrange)km"
+        label.font = .boldSystemFont(ofSize: 15)
+        label2.font = .boldSystemFont(ofSize: 15)
+        label3.font = .boldSystemFont(ofSize: 15)
+        label4.font = .boldSystemFont(ofSize: 15)
         self.view.addSubview(label)
         self.view.addSubview(label2)
         self.view.addSubview(label3)
@@ -73,17 +77,18 @@ class VehicleViewController: UIViewController {
         
     }
     func calcRange() {
-        let percentage = Double(mainview!.battery) ?? 0
-        let speed = Double(mainview!.speedkmh) ?? 20
-        var nigga = 35.0
-        if speed > 30 {
-            nigga = 20.0
-        } else if speed > 26 {
-            nigga = 27.5
-        } else if speed > 21{
-            nigga = 35.0
+        let defaults = UserDefaults.standard
+        let percentage = Double(mainview!.battery) ?? 0.0
+        if( defaults.double(forKey: "SliderValue") == 0.0) {
+            defaults.setValue(1.0, forKey: "SliderValue")
         }
-        vehicleRange = Int(((nigga/100.0)*percentage))
+        let speed = defaults.double(forKey: "SliderValue")
+        let range1 = 20.0*35.0
+        let range2 = range1/speed
+        let battrange = (range2/100)*percentage
+        
+        
+        vehicleRange = Int(battrange) ?? 0
         
     }
 
