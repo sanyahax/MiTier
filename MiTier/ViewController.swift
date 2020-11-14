@@ -85,6 +85,9 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
         } else {
             if vehiclePeripheral.name!.contains(serialTextField.text!) {
                 centralManager.connect(vehiclePeripheral)
+                if(serialTextField.text!.contains("ES200D")) {
+                    g0Var = true
+                }
             }
         }
         
@@ -105,7 +108,12 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
         guard let services = peripheral.services else { return }
         for service in services {
           print(service)
-          peripheral.discoverCharacteristics([CBUUID(string: "2c10")], for: service)
+            if(g0Var == true) {
+                let uuidlist = ["2c01","2c03"]
+                peripheral.discoverCharacteristics([CBUUID(string: "2c01")], for: service)
+            } else {
+                peripheral.discoverCharacteristics([CBUUID(string: "2c01")], for: service)
+            }
         }
     }
     
@@ -113,14 +121,17 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
         guard let characteristics = service.characteristics else { return }
       for characteristic in characteristics {
         print(characteristic)
-        vehicleCharacteristic = characteristic
-        vehiclePeripheral.setNotifyValue(true, for: vehicleCharacteristic)
+        if(characteristic.properties.contains(CBCharacteristicProperties.write)) {
+            let xdmaga = characteristic
+            vehicleCharacteristic = xdmaga
+        }
+       // vehiclePeripheral.setNotifyValue(true, for: vehicleCharacteristic)
         connectedToVehicle = true
         self.vinLabel.text = vehiclePeripheral.name
         vehicleAB = vehiclePeripheral.name!
         print(vehicleCharacteristic!)
-        vehiclePeripheral.writeValue("AT+BKINF=\(passwordController.passwordCB),".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic!, type: CBCharacteristicWriteType.withResponse)
-        vehiclePeripheral.writeValue("1$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic!, type: CBCharacteristicWriteType.withResponse)
+        //vehiclePeripheral.writeValue("AT+BKINF=\(passwordController.passwordCB),".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic!, type: CBCharacteristicWriteType.withResponse)
+        //vehiclePeripheral.writeValue("1$\r\n".data(using: String.Encoding.utf8)!, for: vehicleCharacteristic!, type: CBCharacteristicWriteType.withResponse)
         
         
         
@@ -218,9 +229,10 @@ class ViewController: UIViewController, MenuControllerDelegate {
     var speedkmh = "1"
     var speednow = 0
     let services = [CBUUID(string: "00002c00-0000-1000-8000-00805f9b34fb")]
-    let cmdchar = [CBUUID(string: "00002c10-0000-1000-8000-00805f9b34fb")]
+    let cmdchar = [CBUUID(string: "00002c01-0000-1000-8000-00805f9b34fb")]
     let defaults = UserDefaults.standard
     var headlight = false
+    var g0Var = false
     var sportmode = false
     let defaults1 = UserDefaults.standard
     override func viewDidLoad() {
